@@ -8,8 +8,11 @@ app.get('/', (req, res)=>{
 });
 
 io.on('connection', socket=>{
-  socket.on('message', msg=>{
-    io.emit('message', msg);
+    let name = 'U' + (socket.id).toString().substr(1,4);
+    socket.broadcast.emit('newUser', name);
+    socket.on('message', msg=>{
+    let message = name +': ' +msg;
+    io.emit('message', message);
   });
 });
 
